@@ -368,6 +368,7 @@
           $rows = $(this).find('tbody').first().find(defaults.tbodySelector);
           $rows.each(function() {
             trData = "";
+            var tdData = "";
             ForEachVisibleCell(this, 'td', rowIndex, $hrows.length + $rows.length,
               function(cell, row, col) {
                 if (cell != null) {
@@ -400,7 +401,14 @@
                     trData += ' colspan="' + $(cell).attr('colspan') + '"';
                   if ($(cell).is("[rowspan]"))
                     trData += ' rowspan="' + $(cell).attr('rowspan') + '"';
-                  trData += '>' + parseString(cell, row, col) + '</td>';
+                  //trData += '>' + parseString(cell, row, col) + '</td>';
+                  tdData = parseString(cell, row, col);
+                  if(tdData.indexOf("%") != -1 || !isNaN(tdData)){//numerical
+                	  trData += ' style="mso-number-format:\\@;text-align:right;" ';
+                  }else{//text
+                	  trData += ' style="mso-number-format:\\@;" ';
+                  }
+                  trData += '>' + tdData + '</td>';
                 }
               });
             if (trData.length > 0)
